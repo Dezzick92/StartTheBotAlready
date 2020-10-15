@@ -30,7 +30,7 @@ async def on_message(message):
         return
 
     if message.content in validnums: # if it's a number, do stuff
-        await message.channel.send("audio/" + soundfiles[int(message.content)-1])
+        #await message.channel.send("audio/" + soundfiles[int(message.content)-1])
         connected = message.author.voice
         if connected:
             vc = await connected.channel.connect()
