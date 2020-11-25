@@ -15,6 +15,7 @@ import asyncio
 class SmurfWatch(commands.Cog):
     
     def __init__(self,bot):
+        self.bot = bot
         self.players = [
             (225255130067369984, 2453530),
             (691407715859169332, 1031005),
