@@ -7,11 +7,13 @@ import asyncio
 
 import discord
 from discord.ext import commands
+from discord.channel import ChannelType
 from dotenv import load_dotenv
 
 # cog imports
 
 import voicequeue
+import smurfwatch
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
@@ -19,6 +21,7 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 bot = commands.Bot(command_prefix='!')
 
 bot.add_cog(voicequeue.VoiceQueue(bot))
+bot.add_cog(smurfwatch.SmurfWatch(bot))
 
 # get sound files for the aoe2 taunts
 
