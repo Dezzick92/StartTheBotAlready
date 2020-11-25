@@ -20,9 +20,9 @@ bot = commands.Bot(command_prefix='!')
 
 bot.add_cog(voicequeue.VoiceQueue(bot))
 
-# get sound files for the aoe2 soundbites
+# get sound files for the aoe2 taunts
 
-soundfiles = [f for f in listdir("audio/") if isfile(join("audio/", f))]
+soundfiles = [f for f in listdir("audio/taunts/") if isfile(join("audio/taunts/", f))]
 validnums = [i for i in range(0,len(soundfiles))]
 for i in validnums:
     validnums[i] += 1
@@ -46,6 +46,6 @@ async def on_message(message):
         connected = message.author.voice
         vqueue = bot.get_cog('VoiceQueue')
         if connected and vqueue is not None:
-            await vqueue.add(connected.channel,"audio/" + soundfiles[int(message.content)-1])
+            await vqueue.add(connected.channel,"audio/taunts/" + soundfiles[int(message.content)-1])
 
 bot.run(TOKEN)

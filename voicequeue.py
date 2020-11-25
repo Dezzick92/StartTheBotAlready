@@ -14,18 +14,18 @@ class VoiceQueue(commands.Cog):
         self.voiceLoop.start()
         
     def cog_unload(self):
-        self.printer.cancel()
+        self.voiceLoop.cancel()
 
-    async def add(self,userChannel,audioSource): # add request to play voice in a channel, max of 10
+    async def add(self,userchannel,audiosource): # add request to play voice in a channel, max of 10
         if len(self.queue) < 10:
-            self.queue += [(userChannel,audioSource)]
+            self.queue += [(userchannel,audiosource)]
         else:
             print("Queue full!")
 
-    async def playAudio(self,userChannel,audioSource): # connect to channel, play audio, disconnect
-        vc = await userChannel.connect()
+    async def playAudio(self,userchannel,audiosource): # connect to channel, play audio, disconnect
+        vc = await userchannel.connect()
         self.playing = True
-        vc.play(discord.FFmpegPCMAudio(source=audioSource,executable="ffmpeg/ffmpeg.exe",))
+        vc.play(discord.FFmpegPCMAudio(source=audiosource,executable="ffmpeg/ffmpeg.exe",))
         while vc.is_playing():
             await asyncio.sleep(.1)
         await vc.disconnect()
@@ -35,7 +35,7 @@ class VoiceQueue(commands.Cog):
     async def voiceLoop(self):
         if not self.queue == []: print(self.queue)
         if not self.playing and not self.queue == []:
-            (userChannel,audioSource) = self.queue.pop(0)
-            await self.playAudio(userChannel,audioSource)
+            (userchannel,audiosource) = self.queue.pop(0)
+            await self.playAudio(userchannel,audiosource)
 
 
