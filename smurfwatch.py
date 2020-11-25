@@ -46,15 +46,15 @@ class SmurfWatch(commands.Cog):
             if player[0] in usersinvoice: #
                 players += player[1]
                 channels += [channel.id] # add channel to list
-
-        if self.check(players):
-            vqueue = self.bot.get_cog("VoiceQueue")
-            if vqueue is not None:
-                for channel in channels:
-                    await vqueue.add(self.bot.get_channel(channel),"audio/smurfwatch/smurfs.mp3")
-                # add smurf.mp3 to voice queue in all channels
-            else:
-                print("Enable the VoiceQueue cog in main.py pls")
+        if players != []:
+            if self.check(players):
+                vqueue = self.bot.get_cog("VoiceQueue")
+                if vqueue is not None:
+                    for channel in channels:
+                        await vqueue.add(self.bot.get_channel(channel),"audio/smurfwatch/smurfs.mp3")
+                    # add smurf.mp3 to voice queue in all channels
+                else:
+                    print("Enable the VoiceQueue cog in main.py pls")
 
         #if they are, add smurf.mp3 to voicequeue. if voicequeue isn't there, print a debug message.
 
