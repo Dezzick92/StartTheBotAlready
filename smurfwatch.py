@@ -16,7 +16,7 @@ class SmurfWatch(commands.Cog):
     
     def __init__(self,bot):
         self.bot = bot
-        self.players = [
+        self.players = [ # hardcoded for now
             (225255130067369984, 2453530),
             (691407715859169332, 1031005),
             (218657470409605120, 2044647),
@@ -36,16 +36,21 @@ class SmurfWatch(commands.Cog):
         usersinvoice = {}
 
         for channel in self.bot.get_all_channels(): # get all voice channels the bot can see
+            print(channel.name)
+            print(channel.type)
             if channel.type == ChannelType.voice:
-                for user in channel.members: usersinvoice[user.id] = channel.id # add user ids to a list
+                for user in channel.voice_states:
+                    usersinvoice[user] = channel.id # add user ids to a list
 
         print("Smurfwatch: checking users in voice")
         print(usersinvoice)
 
+        print(players)
+
         for player in self.players: # check if users are in voice
             if player[0] in usersinvoice: #
-                players += player[1]
-                channels += [channel.id] # add channel to list
+                players += [player[1]]
+                channels += [usersinvoice[player[0]]] # add channel to list
         if players != []:
             if self.check(players):
                 vqueue = self.bot.get_cog("VoiceQueue")
@@ -85,7 +90,6 @@ class SmurfWatch(commands.Cog):
                     excludeout += match['last_match']['match_id']
                     finalmatches += match
 
-        finalmatches = matches
         self.exclude = excludeout
 
         # now we have a list of matches to extract profile ids from
@@ -104,7 +108,7 @@ class SmurfWatch(commands.Cog):
         for player in playerstocheck:
             print(player)
             if self.isSmurf(player):
-                print(player['name']+ " is a Smurf!")
+                print(str(player)+ " is a Smurf!")
                 smurf = True
 
         print("Smurfs = " + str(smurf))
@@ -170,8 +174,3 @@ class SmurfWatch(commands.Cog):
             if player_id['won']: wins += 1
 
         return (played,wins/played)
-            
-
-                
-                
-            
