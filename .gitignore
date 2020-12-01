@@ -2,3 +2,4 @@
 /audio/*
 /ffmpeg/*
 __pycache__/
+stba.code-workspace
