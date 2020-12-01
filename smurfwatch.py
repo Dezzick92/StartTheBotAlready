@@ -14,9 +14,9 @@ import asyncio
 
 class SmurfWatch(commands.Cog):
     
-    def __init__(self,bot):
+    def __init__(self, bot):
         self.bot = bot
-        self.players = [ # hardcoded for now
+        self.players = [
             (225255130067369984, 2453530),
             (691407715859169332, 1031005),
             (218657470409605120, 2044647),
@@ -28,6 +28,10 @@ class SmurfWatch(commands.Cog):
 
     def cog_unload(self):
         self.smurfCheck.cancel()
+
+    @commands.command()
+    async def steamid(self, ctx, arg):
+        print(arg)
 
     @tasks.loop(seconds=30)
     async def smurfCheck(self):
@@ -89,7 +93,7 @@ class SmurfWatch(commands.Cog):
                     excludeinternal += match['last_match']['match_id']
                     excludeout += match['last_match']['match_id']
                     finalmatches += match
-                    
+
         self.exclude = excludeout
 
         # now we have a list of matches to extract profile ids from

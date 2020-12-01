@@ -14,6 +14,7 @@ from dotenv import load_dotenv
 
 import voicequeue
 import smurfwatch
+import taunts
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
@@ -22,14 +23,7 @@ bot = commands.Bot(command_prefix='!')
 
 bot.add_cog(voicequeue.VoiceQueue(bot))
 bot.add_cog(smurfwatch.SmurfWatch(bot))
-
-# get sound files for the aoe2 taunts
-
-soundfiles = [f for f in listdir("audio/taunts/") if isfile(join("audio/taunts/", f))]
-validnums = [i for i in range(0,len(soundfiles))]
-for i in validnums:
-    validnums[i] += 1
-    validnums[i] = str(validnums[i])
+bot.add_cog(taunts.Taunts(bot))
 
 @bot.event
 async def on_ready():
@@ -38,17 +32,8 @@ async def on_ready():
     print(bot.user.id)
     print('-----')
 
-@bot.event
-async def on_message(message):
-
-    if message.author == bot.user: # ignore messages from the bot
-        return
-
-    if message.content in validnums: # if it's a number, do stuff
-        #await message.channel.send("audio/" + soundfiles[int(message.content)-1])
-        connected = message.author.voice
-        vqueue = bot.get_cog('VoiceQueue')
-        if connected and vqueue is not None:
-            await vqueue.add(connected.channel,"audio/taunts/" + soundfiles[int(message.content)-1])
+@bot.command()
+async def test(ctx, arg):
+    await ctx.send(arg)
 
 bot.run(TOKEN)

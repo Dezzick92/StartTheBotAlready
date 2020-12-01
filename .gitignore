@@ -1,5 +1,4 @@
 .env
 /audio/*
 /ffmpeg/*
-__pycache__/smurfwatch.cpython-38.pyc
-__pycache__/voicequeue.cpython-38.pyc
+__pycache__/
