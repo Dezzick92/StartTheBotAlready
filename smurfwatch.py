@@ -89,7 +89,7 @@ class SmurfWatch(commands.Cog):
                     excludeinternal += match['last_match']['match_id']
                     excludeout += match['last_match']['match_id']
                     finalmatches += match
-
+                    
         self.exclude = excludeout
 
         # now we have a list of matches to extract profile ids from
