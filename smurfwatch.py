@@ -81,18 +81,19 @@ class SmurfWatch(commands.Cog):
             page = requests.get('https://aoe2.net/api/player/lastmatch?game=aoe2de&profile_id='+ str(player))
             gameinfo = json.loads(page.content)
             matches += [gameinfo]
+            print("checking!")
         
         # exclude any duplicate matches, finished matches, or matches in the exclude list
 
         for match in matches:
             if match['last_match']['match_id'] in excludeinternal:
-                if match['last_match']['finished'] == 'null':
-                    excludeout += match['last_match']['match_id']
+                if match['last_match']['finished'] is None:
+                    excludeout += [match['last_match']['match_id']]
             else:
-                if match['last_match']['finished'] == 'null':
-                    excludeinternal += match['last_match']['match_id']
-                    excludeout += match['last_match']['match_id']
-                    finalmatches += match
+                if match['last_match']['finished'] is None:
+                    excludeinternal += [match['last_match']['match_id']]
+                    excludeout += [match['last_match']['match_id']]
+                    finalmatches += [match]
 
         self.exclude = excludeout
 
@@ -131,7 +132,10 @@ class SmurfWatch(commands.Cog):
         
         if playerinfo != []:
             randomPlayed = playerinfo[0]['num_wins'] + playerinfo[0]['num_losses']
-            randomWinRate = playerinfo[0]['num_wins'] / randomPlayed
+            if randomPlayed > 0:
+                randomWinRate = playerinfo[0]['num_wins'] / randomPlayed
+            else:
+                randomWinRate = 0
 
         # team random leaderboard
 
@@ -140,7 +144,10 @@ class SmurfWatch(commands.Cog):
 
         if playerinfo != []:
             teamRandomPlayed = playerinfo[0]['num_wins'] + playerinfo[0]['num_losses']
-            teamRandomWinRate = playerinfo[0]['num_wins'] / teamRandomPlayed
+            if teamRandomPlayed > 0:
+                teamRandomWinRate = playerinfo[0]['num_wins'] / teamRandomPlayed
+            else:
+                teamRandomWinRate = 0
 
         # if total played games are above 60 don't bother doing any digging if anything is missing
 
@@ -176,5 +183,7 @@ class SmurfWatch(commands.Cog):
             for player in match['players']:
                 if str(player['profile_id']) == str(profile_id): player_id = player
             if player_id['won']: wins += 1
+
+        if played == 0: played += 1
 
         return (played,wins/played)

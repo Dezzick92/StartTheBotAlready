@@ -3,3 +3,5 @@
 /ffmpeg/*
 __pycache__/
 stba.code-workspace
+__pycache__/smurfwatch.cpython-38.pyc
+__pycache__/voicequeue.cpython-38.pyc
